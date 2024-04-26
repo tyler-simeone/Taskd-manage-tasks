@@ -1,0 +1,11 @@
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/Debug/net8.0/manage-tasks.csproj.AssemblyReference.cache
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/Debug/net8.0/manage-tasks.GeneratedMSBuildEditorConfig.editorconfig
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/Debug/net8.0/manage-tasks.AssemblyInfoInputs.cache
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/Debug/net8.0/manage-tasks.AssemblyInfo.cs
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/Debug/net8.0/manage-tasks.csproj.CoreCompileInputs.cache
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/Debug/net8.0/manage-tasks.MvcApplicationPartsAssemblyInfo.cs
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/Debug/net8.0/manage-tasks.MvcApplicationPartsAssemblyInfo.cache
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/Debug/net8.0/manage-tasks.sourcelink.json
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/Debug/net8.0/manage-tasks.dll
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/Debug/net8.0/refint/manage-tasks.dll
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/Debug/net8.0/manage-tasks.pdb
