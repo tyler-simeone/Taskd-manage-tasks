@@ -1,3 +1,4 @@
+using System;
 using MySql.Data.MySqlClient;
 
 public class TasksDataservice : ITasksDataservice
@@ -12,36 +13,37 @@ public class TasksDataservice : ITasksDataservice
     public void GetTask(int taskId, int userId)
     {
         var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-        using MySqlConnection connection = new MySqlConnection(connectionString);
-
-        try
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-        {
-            using (SqlCommand command = new SqlCommand("YourStoredProcedureName", connection))
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                command.CommandType = CommandType.StoredProcedure;
+                string query = $"CALL ProjectB.TaskGetDetailsByTaskId(@paramTaskId)";
 
-                // Add parameters if needed
-                command.Parameters.AddWithValue("@Parameter1", value1);
-                command.Parameters.AddWithValue("@Parameter2", value2);
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    // Add parameters
+                    command.Parameters.AddWithValue("@paramTaskId", taskId);
 
-                connection.Open();
-                
-                // Execute the stored procedure
-                command.ExecuteNonQuery();
-                
-                // If the stored procedure returns a value, you can retrieve it
-                // For example, if the stored procedure returns a single value
-                // int result = (int)command.ExecuteScalar();
+                    try
+                    {
+                        connection.Open();
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int id = reader.GetInt32("TaskId"); 
+                                string name = reader.GetString("TaskName"); 
+
+                                Console.WriteLine($"ID: {id}, Name: {name}");
+                            }
+                        }
+                        }
+                    catch (System.Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
+                    }
+                }
             }
-        }
-        }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
     }
 
     public void GetTasks(int userId)
