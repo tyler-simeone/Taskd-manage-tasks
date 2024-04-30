@@ -482,6 +482,9 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+<<<<<<< HEAD
 
 # Ignore .NET build output
 obj/
+=======
+>>>>>>> 774412c6067919a4dd7e59bf79ba16348101e0e5
