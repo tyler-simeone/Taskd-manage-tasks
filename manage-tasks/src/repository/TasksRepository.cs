@@ -7,11 +7,12 @@ public class TasksRepository : ITasksRepository
         _tasksDataservice = tasksDataservice;
     }
 
-    public void GetTask(int taskId, int userId)
+    public async Task<Task> GetTask(int taskId, int userId)
     {
         try
         {
-            _tasksDataservice.GetTask(taskId, userId);
+            Task task = await _tasksDataservice.GetTask(taskId, userId);
+            return task;
         }
         catch (System.Exception ex)
         {
@@ -20,11 +21,12 @@ public class TasksRepository : ITasksRepository
         }
     }
 
-    public void GetTasks(int userId)
+    public async Task<TaskList> GetTasks(int columnId)
     {
         try
         {
-            _tasksDataservice.GetTasks(userId);
+            TaskList taskList = await _tasksDataservice.GetTasks(columnId);
+            return taskList;
         }
         catch (System.Exception ex)
         {

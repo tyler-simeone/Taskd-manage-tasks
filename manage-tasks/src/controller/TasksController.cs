@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TasksController : ControllerBase
+public class TasksController : Controller
 {
     IRequestValidator _validator;
     ITasksRepository _tasksRepository;
@@ -14,14 +14,16 @@ public class TasksController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetTask(int id, int userId)
+    [ProducesResponseType(typeof(Task), StatusCodes.Status200OK)]
+    public async Task<ActionResult<Task>> GetTask(int id, int userId)
     {
         if (_validator.ValidateGetTask(id, userId))
         {
             try
             {
-                _tasksRepository.GetTask(id, userId);
-                return Ok($"Task with ID {id} retrieved successfully");
+                Task task = await _tasksRepository.GetTask(id, userId);
+                Console.WriteLine($"Task: {task.TaskDescription}");
+                return Ok(task);
             }
             catch (System.Exception ex)
             {
@@ -36,14 +38,15 @@ public class TasksController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetTasks(int userId)
+    [ProducesResponseType(typeof(TaskList), StatusCodes.Status200OK)]
+    public async Task<ActionResult<TaskList>> GetTasks(int columnId)
     {
-        if (_validator.ValidateGetTasks(userId))
+        if (_validator.ValidateGetTasks(columnId))
         {
             try
             {
-                _tasksRepository.GetTasks(userId);
-                return Ok("GetAllTasks");
+                TaskList taskList = await _tasksRepository.GetTasks(columnId);
+                return Ok(taskList);
             }
             catch (System.Exception ex)
             {
@@ -58,6 +61,7 @@ public class TasksController : ControllerBase
     }
     
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult CreateTask(CreateTask createTaskRequest)
     {
         if (_validator.ValidateCreateTask(createTaskRequest))
@@ -80,6 +84,7 @@ public class TasksController : ControllerBase
     }
 
     [HttpPut]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult UpdateTask(UpdateTask updateTaskRequest)
     {
         if (_validator.ValidateUpdateTask(updateTaskRequest))
@@ -102,6 +107,7 @@ public class TasksController : ControllerBase
     }
 
     [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult DeleteTask(DeleteTask deleteTaskRequest)
     {
         if (_validator.ValidateDeleteTask(deleteTaskRequest))

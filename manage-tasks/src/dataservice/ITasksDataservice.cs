@@ -1,9 +1,9 @@
 public interface ITasksDataservice 
 {
 
-    void GetTask(int taskId, int userId);
+    Task<Task> GetTask(int taskId, int userId);
 
-    void GetTasks(int userId);
+    Task<TaskList> GetTasks(int userId);
     
     void CreateTask(CreateTask createTaskRequest);
 

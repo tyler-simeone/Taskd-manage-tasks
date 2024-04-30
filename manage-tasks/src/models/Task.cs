@@ -5,13 +5,17 @@ public class Task : ResponseBase
         
     }
 
-    public Guid TaskId;
+    public int TaskId { get; set; }
 
-    public string TaskName;
+    public string TaskName { get; set; }
 
-    public string TaskDescription;
+    public string TaskDescription { get; set; }
     
-    public DateTime CreateDatetime;
+    public DateTime CreateDatetime { get; set; }
+
+    public int CreateUserId { get; set; }
     
-    public DateTime UpdateDatetime;
+    public DateTime UpdateDatetime { get; set; }
+
+    public int UpdateUserId { get; set; }
 }
