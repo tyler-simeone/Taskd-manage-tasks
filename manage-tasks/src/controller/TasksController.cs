@@ -23,9 +23,9 @@ public class TasksController : ControllerBase
                 _tasksRepository.GetTask(id, userId);
                 return Ok($"Task with ID {id} retrieved successfully");
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                
+                Console.WriteLine($"Error: {ex.Message}");
                 throw;
             }
         }
@@ -42,12 +42,12 @@ public class TasksController : ControllerBase
         {
             try
             {
-                // Retrieve all tasks logic
+                _tasksRepository.GetTasks(userId);
                 return Ok("GetAllTasks");
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                
+                Console.WriteLine($"Error: {ex.Message}");
                 throw;
             }
         }
@@ -58,53 +58,68 @@ public class TasksController : ControllerBase
     }
     
     [HttpPost]
-    public void CreateTask(CreateTask createTaskRequest)
+    public IActionResult CreateTask(CreateTask createTaskRequest)
     {
         if (_validator.ValidateCreateTask(createTaskRequest))
         {
             try
             {
-                
+                _tasksRepository.CreateTask(createTaskRequest);
+                return Ok("Task Created");
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                
+                Console.WriteLine($"Error: {ex.Message}");
                 throw;
             }
+        }
+        else 
+        {
+            return BadRequest("CreateTaskRequest is required.");
         }
     }
 
     [HttpPut]
-    public void UpdateTask(UpdateTask updateTaskRequest)
+    public IActionResult UpdateTask(UpdateTask updateTaskRequest)
     {
         if (_validator.ValidateUpdateTask(updateTaskRequest))
         {
             try
             {
-                
+                _tasksRepository.UpdateTask(updateTaskRequest);
+                return Ok("Task Updated");
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                
+                Console.WriteLine($"Error: {ex.Message}");
                 throw;
             }
+        }
+        else 
+        {
+            return BadRequest("UpdateTask is required.");
         }
     }
 
     [HttpDelete]
-    public void DeleteTask(DeleteTask deleteTaskRequest)
+    public IActionResult DeleteTask(DeleteTask deleteTaskRequest)
     {
         if (_validator.ValidateDeleteTask(deleteTaskRequest))
         {
             try
             {
-                
+                _tasksRepository.DeleteTask(deleteTaskRequest);
+                return Ok("Task Deleted");
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                
+                Console.WriteLine($"Error: {ex.Message}");
                 throw;
             }
+        }
+        else 
+        {
+            return BadRequest("DeleteTask is required.");
         }
     }
 }
