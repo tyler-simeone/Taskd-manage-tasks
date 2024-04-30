@@ -1,4 +1,4 @@
-public class TasksRepository 
+public class TasksRepository : ITasksRepository
 {
     TasksDataservice _tasksDataservice;
 

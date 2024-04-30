@@ -1,20 +1,40 @@
-public class TasksDataservice 
+using MySql.Data.MySqlClient;
+using Microsoft.Extensions.Configuration;
+
+
+public class TasksDataservice : ITasksDataservice
 {
+    private IConfiguration _configuration;
+    // private string _connectionString;
+
     public TasksDataservice()
     {
-        
+
+    }
+    
+    public TasksDataservice(IConfiguration configuration)
+    {
+         _configuration = configuration;
     }
 
     public void GetTask(Guid taskId, Guid userId)
     {
-        
+        var connectionString = _configuration.GetConnectionString("MySqlConnection");
+        using MySqlConnection connection = new MySqlConnection(connectionString);
+
         try
         {
+            connection.Open();
+
+            Console.WriteLine("Connection successful!");
             
+            // Perform database operations here
+            
+            connection.Close();
         }
-        catch (System.Exception)
+        catch (System.Exception ex)
         {
-            
+            Console.WriteLine($"Error: {ex.Message}");
             throw;
         }
     }

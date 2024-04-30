@@ -5,12 +5,12 @@ public class RequestValidator
         
     }
 
-    public bool ValidateGetTask(Guid taskId, Guid userId)
+    public bool ValidateGetTask(int taskId)
     {
         return true;
     }
 
-    public bool ValidateGetTasks(Guid userId)
+    public bool ValidateGetTasks(int userId)
     {
         return true;
     }

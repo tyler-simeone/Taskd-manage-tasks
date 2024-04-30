@@ -1,22 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 
-public class TasksController 
+[ApiController]
+[Route("api/[controller]")]
+public class TasksController : ControllerBase
 {
     RequestValidator _validator;
     TasksRepository _tasksRepository;
 
     public TasksController()
     {
+        _validator = new RequestValidator();
         _tasksRepository = new TasksRepository();
     }
 
-    public void GetTask([FromQuery] Guid taskId, [FromQuery] Guid userId)
+    [HttpGet("{id}")]
+    public IActionResult GetTask(int id, int userId)
     {
-        if (_validator.ValidateGetTask(taskId, userId))
+        if (_validator.ValidateGetTask(id))
         {
             try
             {
-                
+                return Ok($"Task with ID {id} retrieved successfully");
             }
             catch (System.Exception)
             {
@@ -24,15 +28,21 @@ public class TasksController
                 throw;
             }
         }
+        else 
+        {
+            return BadRequest("Task ID is required.");
+        }
     }
 
-    public void GetTasks([FromQuery] Guid userId)
+    [HttpGet]
+    public IActionResult GetTasks(int userId)
     {
         if (_validator.ValidateGetTasks(userId))
         {
             try
             {
-                
+                // Retrieve all tasks logic
+                return Ok("GetAllTasks");
             }
             catch (System.Exception)
             {
@@ -40,8 +50,13 @@ public class TasksController
                 throw;
             }
         }
+        else 
+        {
+            return BadRequest("User ID is required.");
+        }
     }
     
+    [HttpPost]
     public void CreateTask(CreateTask createTaskRequest)
     {
         if (_validator.ValidateCreateTask(createTaskRequest))
@@ -58,6 +73,7 @@ public class TasksController
         }
     }
 
+    [HttpPut]
     public void UpdateTask(UpdateTask updateTaskRequest)
     {
         if (_validator.ValidateUpdateTask(updateTaskRequest))
@@ -74,6 +90,7 @@ public class TasksController
         }
     }
 
+    [HttpDelete]
     public void DeleteTask(DeleteTask deleteTaskRequest)
     {
         if (_validator.ValidateDeleteTask(deleteTaskRequest))
