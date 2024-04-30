@@ -1,11 +1,24 @@
-public class RequestValidator
+public interface IRequestValidator
+{
+    bool ValidateGetTask(int taskId, int userId);
+
+    bool ValidateGetTasks(int userId);
+
+    bool ValidateCreateTask(CreateTask createTaskRequest);
+
+    bool ValidateUpdateTask(UpdateTask updateTaskRequest);
+
+    bool ValidateDeleteTask(DeleteTask deleteTaskRequest);
+}
+
+public class RequestValidator : IRequestValidator
 {
     public RequestValidator()
     {
         
     }
 
-    public bool ValidateGetTask(int taskId)
+    public bool ValidateGetTask(int taskId, int userId)
     {
         return true;
     }

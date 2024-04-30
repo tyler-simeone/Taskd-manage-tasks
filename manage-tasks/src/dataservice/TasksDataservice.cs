@@ -1,25 +1,18 @@
 using MySql.Data.MySqlClient;
-using Microsoft.Extensions.Configuration;
-
 
 public class TasksDataservice : ITasksDataservice
 {
     private IConfiguration _configuration;
     // private string _connectionString;
-
-    public TasksDataservice()
-    {
-
-    }
     
     public TasksDataservice(IConfiguration configuration)
     {
          _configuration = configuration;
     }
 
-    public void GetTask(Guid taskId, Guid userId)
+    public void GetTask(int taskId, int userId)
     {
-        var connectionString = _configuration.GetConnectionString("MySqlConnection");
+        var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
         using MySqlConnection connection = new MySqlConnection(connectionString);
 
         try
@@ -39,7 +32,7 @@ public class TasksDataservice : ITasksDataservice
         }
     }
 
-    public void GetTasks(Guid userId)
+    public void GetTasks(int userId)
     {
         
         try

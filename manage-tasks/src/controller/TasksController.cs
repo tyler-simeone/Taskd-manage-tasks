@@ -4,22 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/[controller]")]
 public class TasksController : ControllerBase
 {
-    RequestValidator _validator;
-    TasksRepository _tasksRepository;
+    IRequestValidator _validator;
+    ITasksRepository _tasksRepository;
 
-    public TasksController()
+    public TasksController(ITasksRepository tasksRepository, IRequestValidator requestValidator)
     {
-        _validator = new RequestValidator();
-        _tasksRepository = new TasksRepository();
+        _validator = requestValidator;
+        _tasksRepository = tasksRepository;
     }
 
     [HttpGet("{id}")]
     public IActionResult GetTask(int id, int userId)
     {
-        if (_validator.ValidateGetTask(id))
+        if (_validator.ValidateGetTask(id, userId))
         {
             try
             {
+                _tasksRepository.GetTask(id, userId);
                 return Ok($"Task with ID {id} retrieved successfully");
             }
             catch (System.Exception)

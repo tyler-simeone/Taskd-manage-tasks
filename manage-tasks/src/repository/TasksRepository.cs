@@ -1,18 +1,18 @@
 public class TasksRepository : ITasksRepository
 {
-    TasksDataservice _tasksDataservice;
+    ITasksDataservice _tasksDataservice;
 
-    public TasksRepository()
+    public TasksRepository(ITasksDataservice tasksDataservice)
     {
-        _tasksDataservice = new TasksDataservice();
+        _tasksDataservice = tasksDataservice;
     }
 
-    public void GetTask(Guid taskId, Guid userId)
+    public void GetTask(int taskId, int userId)
     {
         
         try
         {
-            
+            _tasksDataservice.GetTask(taskId, userId);
         }
         catch (System.Exception)
         {
@@ -21,7 +21,7 @@ public class TasksRepository : ITasksRepository
         }
     }
 
-    public void GetTasks(Guid userId)
+    public void GetTasks(int userId)
     {
         
         try
