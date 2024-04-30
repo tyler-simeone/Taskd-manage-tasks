@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj": {}
+    "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj": {}
   },
   "projects": {
-    "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj": {
+    "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj",
+        "projectUniqueName": "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj",
         "projectName": "manage-tasks",
-        "projectPath": "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj",
-        "packagesPath": "/Users/tyler/.nuget/packages/",
-        "outputPath": "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/",
+        "projectPath": "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj",
+        "packagesPath": "/Users/tylersimeone/.nuget/packages/",
+        "outputPath": "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/tyler/.nuget/NuGet/NuGet.Config"
+          "/Users/tylersimeone/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -46,6 +46,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.4, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.3.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
