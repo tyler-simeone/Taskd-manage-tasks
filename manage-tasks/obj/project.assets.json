@@ -460,19 +460,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/tyler/.nuget/packages/": {}
+    "/Users/tylersimeone/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj",
+      "projectUniqueName": "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj",
       "projectName": "manage-tasks",
-      "projectPath": "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj",
-      "packagesPath": "/Users/tyler/.nuget/packages/",
-      "outputPath": "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/",
+      "projectPath": "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-tasks/manage-tasks/manage-tasks.csproj",
+      "packagesPath": "/Users/tylersimeone/.nuget/packages/",
+      "outputPath": "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-tasks/manage-tasks/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/tyler/.nuget/NuGet/NuGet.Config"
+        "/Users/tylersimeone/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
