@@ -3,7 +3,6 @@ using MySql.Data.MySqlClient;
 public class TasksDataservice : ITasksDataservice
 {
     private IConfiguration _configuration;
-    // private string _connectionString;
     
     public TasksDataservice(IConfiguration configuration)
     {
