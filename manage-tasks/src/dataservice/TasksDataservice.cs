@@ -142,7 +142,7 @@ public class TasksDataservice : ITasksDataservice
         }
     }
 
-    public async void DeleteTask(DeleteTask deleteTaskRequest)
+    public async void DeleteTask(int taskId, int userId)
     {
         var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
 
@@ -152,8 +152,8 @@ public class TasksDataservice : ITasksDataservice
 
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@paramColumnId", deleteTaskRequest.TaskId);
-                command.Parameters.AddWithValue("@paramUpdateUserId", deleteTaskRequest.UserId);
+                command.Parameters.AddWithValue("@paramColumnId", taskId);
+                command.Parameters.AddWithValue("@paramUpdateUserId", userId);
 
                 try
                 {

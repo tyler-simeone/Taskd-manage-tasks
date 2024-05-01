@@ -108,13 +108,13 @@ public class TasksController : Controller
 
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult DeleteTask(DeleteTask deleteTaskRequest)
+    public IActionResult DeleteTask(int taskId, int userId)
     {
-        if (_validator.ValidateDeleteTask(deleteTaskRequest))
+        if (_validator.ValidateDeleteTask(taskId, userId))
         {
             try
             {
-                _tasksRepository.DeleteTask(deleteTaskRequest);
+                _tasksRepository.DeleteTask(taskId, userId);
                 return Ok("Task Deleted");
             }
             catch (System.Exception ex)

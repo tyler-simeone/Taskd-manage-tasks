@@ -61,11 +61,11 @@ public class TasksRepository : ITasksRepository
         }
     }
 
-    public void DeleteTask(DeleteTask deleteTaskRequest)
+    public void DeleteTask(int taskId, int userId)
     {
         try
         {
-            _tasksDataservice.DeleteTask(deleteTaskRequest);
+            _tasksDataservice.DeleteTask(taskId, userId);
         }
         catch (System.Exception ex)
         {

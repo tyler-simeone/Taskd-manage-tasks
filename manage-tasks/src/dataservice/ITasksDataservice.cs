@@ -9,5 +9,5 @@ public interface ITasksDataservice
 
     void UpdateTask(UpdateTask updateTaskRequest);
 
-    void DeleteTask(DeleteTask deleteTaskRequest);
+    void DeleteTask(int taskId, int userId);
 }
