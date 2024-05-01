@@ -7,72 +7,69 @@ public class TasksRepository : ITasksRepository
         _tasksDataservice = tasksDataservice;
     }
 
-    public void GetTask(int taskId, int userId)
+    public async Task<Task> GetTask(int taskId, int userId)
     {
-        
         try
         {
-            _tasksDataservice.GetTask(taskId, userId);
+            Task task = await _tasksDataservice.GetTask(taskId, userId);
+            return task;
         }
-        catch (System.Exception)
+        catch (System.Exception ex)
         {
-            
+            Console.WriteLine($"Error: {ex.Message}");
             throw;
         }
     }
 
-    public void GetTasks(int userId)
+    public async Task<TaskList> GetTasks(int columnId)
     {
-        
         try
         {
-            
+            TaskList taskList = await _tasksDataservice.GetTasks(columnId);
+            return taskList;
         }
-        catch (System.Exception)
+        catch (System.Exception ex)
         {
-            
+            Console.WriteLine($"Error: {ex.Message}");
             throw;
         }
     }
     
     public void CreateTask(CreateTask createTaskRequest)
     {
-        
         try
         {
-            
+            _tasksDataservice.CreateTask(createTaskRequest);
         }
-        catch (System.Exception)
+        catch (System.Exception ex)
         {
-            
+            Console.WriteLine($"Error: {ex.Message}");
             throw;
         }
     }
 
     public void UpdateTask(UpdateTask updateTaskRequest)
     {
-        
         try
         {
-            
+            _tasksDataservice.UpdateTask(updateTaskRequest);
         }
-        catch (System.Exception)
+        catch (System.Exception ex)
         {
-            
+            Console.WriteLine($"Error: {ex.Message}");
             throw;
         }
     }
 
-    public void DeleteTask(DeleteTask deleteTaskRequest)
+    public void DeleteTask(int taskId, int userId)
     {
-        
         try
         {
-            
+            _tasksDataservice.DeleteTask(taskId, userId);
         }
-        catch (System.Exception)
+        catch (System.Exception ex)
         {
-            
+            Console.WriteLine($"Error: {ex.Message}");
             throw;
         }
     }

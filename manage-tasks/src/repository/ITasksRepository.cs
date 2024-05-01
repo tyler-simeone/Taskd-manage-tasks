@@ -1,12 +1,12 @@
 public interface ITasksRepository 
 {
-    void GetTask(int taskId, int userId);
+    Task<Task> GetTask(int taskId, int userId);
 
-    void GetTasks(int userId);
+    Task<TaskList> GetTasks(int columnId);
     
     void CreateTask(CreateTask createTaskRequest);
 
     void UpdateTask(UpdateTask updateTaskRequest);
 
-    void DeleteTask(DeleteTask deleteTaskRequest);
+    void DeleteTask(int taskId, int userId);
 }

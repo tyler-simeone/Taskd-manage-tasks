@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,16 +8,26 @@ var connectionString = builder.Configuration.GetConnectionString("ProjectBLocalC
 
 
 // Add services to the container.
-builder.Services.AddControllers(); // Add required services for controllers
+builder.Services.AddControllers();;
 builder.Services.AddSingleton<IRequestValidator, RequestValidator>();
 builder.Services.AddSingleton<ITasksRepository, TasksRepository>();
 builder.Services.AddSingleton<ITasksDataservice, TasksDataservice>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
     {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "manage-tasks", Version = "v1" });
+        options.SwaggerDoc("v1", new OpenApiInfo 
+        { 
+            Title = "manage-tasks", 
+            Version = "v1", 
+            Description = "An ASP.NET Core Web API for managing Tasks",
+            Contact = new OpenApiContact
+                    {
+                        Name = "Tyler Simeone",
+                        Url = new Uri("https://github.com/tyler-simeone")
+                    },
+        });
     });
 
 var app = builder.Build();

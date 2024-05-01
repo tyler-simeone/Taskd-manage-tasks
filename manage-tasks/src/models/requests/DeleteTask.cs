@@ -5,7 +5,7 @@ public class DeleteTask
         
     }
 
-    public Guid UserId;
+    public int UserId;
     
-    public Guid TaskId;
+    public int TaskId;
 }

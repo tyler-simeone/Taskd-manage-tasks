@@ -5,9 +5,11 @@ public class CreateTask
         
     }
 
-    public Guid UserId;
+    public int UserId { get; set; }
 
-    public string TaskName;
+    public int ColumnId { get; set; }
 
-    public string TaskDescription;
+    public string TaskName { get; set; }
+
+    public string TaskDescription { get; set; }
 }

@@ -5,11 +5,11 @@ public class UpdateTask
         
     }
 
-    public Guid UserId;
+    public int UserId { get; set; }
     
-    public Guid TaskId;
+    public int TaskId { get; set; }
 
-    public string TaskName;
+    public string TaskName { get; set; }
 
-    public string TaskDescription;
+    public string TaskDescription { get; set; }
 }

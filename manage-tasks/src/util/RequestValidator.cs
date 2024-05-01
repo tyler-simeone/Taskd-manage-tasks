@@ -8,7 +8,7 @@ public interface IRequestValidator
 
     bool ValidateUpdateTask(UpdateTask updateTaskRequest);
 
-    bool ValidateDeleteTask(DeleteTask deleteTaskRequest);
+    bool ValidateDeleteTask(int taskId, int userId);
 }
 
 public class RequestValidator : IRequestValidator
@@ -38,7 +38,7 @@ public class RequestValidator : IRequestValidator
         return true;
     }
     
-    public bool ValidateDeleteTask(DeleteTask deleteTaskRequest)
+    public bool ValidateDeleteTask(int taskId, int userId)
     {
         return true;
     }
