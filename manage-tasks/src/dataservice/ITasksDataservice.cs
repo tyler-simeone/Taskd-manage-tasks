@@ -1,13 +1,18 @@
-public interface ITasksDataservice 
+using manage_tasks.src.models;
+
+namespace manage_tasks.src.dataservice
 {
+    public interface ITasksDataservice
+    {
 
-    Task<Task> GetTask(int taskId, int userId);
+        Task<models.Task> GetTask(int taskId, int userId);
 
-    Task<TaskList> GetTasks(int userId);
-    
-    void CreateTask(CreateTask createTaskRequest);
+        Task<TaskList> GetTasks(int userId);
 
-    void UpdateTask(UpdateTask updateTaskRequest);
+        void CreateTask(CreateTask createTaskRequest);
 
-    void DeleteTask(int taskId, int userId);
+        void UpdateTask(UpdateTask updateTaskRequest);
+
+        void DeleteTask(int taskId, int userId);
+    }
 }

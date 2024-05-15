@@ -1,76 +1,82 @@
-public class TasksRepository : ITasksRepository
+using manage_tasks.src.dataservice;
+using manage_tasks.src.models;
+
+namespace manage_tasks.src.repository
 {
-    ITasksDataservice _tasksDataservice;
+    public class TasksRepository : ITasksRepository
+    {
+        ITasksDataservice _tasksDataservice;
 
-    public TasksRepository(ITasksDataservice tasksDataservice)
-    {
-        _tasksDataservice = tasksDataservice;
-    }
+        public TasksRepository(ITasksDataservice tasksDataservice)
+        {
+            _tasksDataservice = tasksDataservice;
+        }
 
-    public async Task<Task> GetTask(int taskId, int userId)
-    {
-        try
+        public async Task<models.Task> GetTask(int taskId, int userId)
         {
-            Task task = await _tasksDataservice.GetTask(taskId, userId);
-            return task;
+            try
+            {
+                models.Task task = await _tasksDataservice.GetTask(taskId, userId);
+                return task;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-    }
 
-    public async Task<TaskList> GetTasks(int columnId)
-    {
-        try
+        public async Task<TaskList> GetTasks(int columnId)
         {
-            TaskList taskList = await _tasksDataservice.GetTasks(columnId);
-            return taskList;
+            try
+            {
+                TaskList taskList = await _tasksDataservice.GetTasks(columnId);
+                return taskList;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-    }
-    
-    public void CreateTask(CreateTask createTaskRequest)
-    {
-        try
-        {
-            _tasksDataservice.CreateTask(createTaskRequest);
-        }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-    }
 
-    public void UpdateTask(UpdateTask updateTaskRequest)
-    {
-        try
+        public void CreateTask(CreateTask createTaskRequest)
         {
-            _tasksDataservice.UpdateTask(updateTaskRequest);
+            try
+            {
+                _tasksDataservice.CreateTask(createTaskRequest);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-    }
 
-    public void DeleteTask(int taskId, int userId)
-    {
-        try
+        public void UpdateTask(UpdateTask updateTaskRequest)
         {
-            _tasksDataservice.DeleteTask(taskId, userId);
+            try
+            {
+                _tasksDataservice.UpdateTask(updateTaskRequest);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
-        catch (System.Exception ex)
+
+        public void DeleteTask(int taskId, int userId)
         {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
+            try
+            {
+                _tasksDataservice.DeleteTask(taskId, userId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
     }
 }
