@@ -122,11 +122,12 @@ namespace manage_tasks.src.dataservice
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = $"CALL ProjectB.TaskUpdate(@paramColumnId, @paramTaskName, @paramTaskDescription, @paramUpdateUserId)";
+                string query = $"CALL ProjectB.TaskUpdate(@paramTaskId, @paramColumnId, @paramTaskName, @paramTaskDescription, @paramUpdateUserId)";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@paramColumnId", updateTaskRequest.TaskId);
+                    command.Parameters.AddWithValue("@paramTaskId", updateTaskRequest.TaskId);
+                    command.Parameters.AddWithValue("@paramColumnId", updateTaskRequest.ColumnId);
                     command.Parameters.AddWithValue("@paramTaskName", updateTaskRequest.TaskName);
                     command.Parameters.AddWithValue("@paramTaskDescription", updateTaskRequest.TaskDescription);
                     command.Parameters.AddWithValue("@paramUpdateUserId", updateTaskRequest.UserId);
