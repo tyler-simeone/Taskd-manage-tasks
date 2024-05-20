@@ -110,7 +110,7 @@ namespace manage_tasks.src.controller
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{taskId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult DeleteTask(int taskId, int userId)
         {

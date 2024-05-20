@@ -178,6 +178,7 @@ namespace manage_tasks.src.dataservice
         private models.Task ExtractTaskFromReader(MySqlDataReader reader)
         {
             int id = reader.GetInt32("TaskId");
+            int columnId = reader.GetInt32("ColumnId");
             string name = reader.GetString("TaskName");
             string description = reader.GetString("TaskDescription");
             DateTime createDatetime = reader.GetDateTime("CreateDatetime");
@@ -188,6 +189,7 @@ namespace manage_tasks.src.dataservice
             return new models.Task()
             {
                 TaskId = id,
+                ColumnId = columnId,
                 TaskName = name,
                 TaskDescription = description,
                 CreateDatetime = createDatetime,

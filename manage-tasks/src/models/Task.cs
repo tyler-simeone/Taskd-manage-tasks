@@ -8,6 +8,8 @@ namespace manage_tasks.src.models
         }
 
         public int TaskId { get; set; }
+        
+        public int ColumnId { get; set; }
 
         public string TaskName { get; set; }
 
