@@ -1,4 +1,6 @@
 using System.Text.Json;
+using manage_tasks.src.dataservice;
+using manage_tasks.src.repository;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);

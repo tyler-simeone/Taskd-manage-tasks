@@ -1,197 +1,204 @@
 using System;
+using manage_tasks.src.models;
 using MySql.Data.MySqlClient;
 
-public class TasksDataservice : ITasksDataservice
+namespace manage_tasks.src.dataservice
 {
-    private IConfiguration _configuration;
-    
-    public TasksDataservice(IConfiguration configuration)
+    public class TasksDataservice : ITasksDataservice
     {
-         _configuration = configuration;
-    }
+        private IConfiguration _configuration;
 
-    public async Task<Task> GetTask(int taskId, int userId)
-    {
-        var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        public TasksDataservice(IConfiguration configuration)
         {
-            string query = $"CALL ProjectB.TaskGetDetailsByTaskId(@paramTaskId)";
+            _configuration = configuration;
+        }
 
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+        public async Task<models.Task> GetTask(int taskId, int userId)
+        {
+            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("@paramTaskId", taskId);
+                string query = $"CALL ProjectB.TaskGetDetailsByTaskId(@paramTaskId)";
 
-                try
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    await connection.OpenAsync();
+                    command.Parameters.AddWithValue("@paramTaskId", taskId);
 
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                    try
                     {
-                        while (reader.Read())
-                        {
-                            return ExtractTaskFromReader(reader);
-                        }
+                        await connection.OpenAsync();
 
-                        return new Task();
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                return ExtractTaskFromReader(reader);
+                            }
+
+                            return new models.Task();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
                     }
                 }
-                catch (System.Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
-                }
             }
         }
-    }
 
-    public async Task<TaskList> GetTasks(int columnId)
-    {
-        var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        public async Task<TaskList> GetTasks(int columnId)
         {
-            string query = $"CALL ProjectB.TaskGetAllByColumnId(@paramColumnId)";
+            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
 
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("@paramColumnId", columnId);
+                string query = $"CALL ProjectB.TaskGetAllByColumnId(@paramColumnId)";
 
-                try
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    await connection.OpenAsync();
+                    command.Parameters.AddWithValue("@paramColumnId", columnId);
 
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                    try
                     {
-                        var taskList = new TaskList();
+                        await connection.OpenAsync();
 
-                        while (reader.Read())
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            Task task = ExtractTaskFromReader(reader);
-                            taskList.Tasks.Add(task);
-                        }
+                            var taskList = new TaskList();
 
-                        return taskList;
+                            while (reader.Read())
+                            {
+                                models.Task task = ExtractTaskFromReader(reader);
+                                taskList.Tasks.Add(task);
+                            }
+
+                            return taskList;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
                     }
                 }
-                catch (System.Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
-                }
             }
         }
-    }
-    
-    public async void CreateTask(CreateTask createTaskRequest)
-    {
-        var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
 
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        public async void CreateTask(CreateTask createTaskRequest)
         {
-            string query = $"CALL ProjectB.TaskPersist(@paramColumnId, @paramTaskName, @paramTaskDescription, @paramCreateUserId)";
+            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
 
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("@paramColumnId", createTaskRequest.ColumnId);
-                command.Parameters.AddWithValue("@paramTaskName", createTaskRequest.TaskName);
-                command.Parameters.AddWithValue("@paramTaskDescription", createTaskRequest.TaskDescription);
-                command.Parameters.AddWithValue("@paramCreateUserId", createTaskRequest.UserId);
+                string query = $"CALL ProjectB.TaskPersist(@paramColumnId, @paramTaskName, @paramTaskDescription, @paramCreateUserId)";
 
-                try
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    await connection.OpenAsync();
-                    await command.ExecuteNonQueryAsync();
-                }
-                catch (System.Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
+                    command.Parameters.AddWithValue("@paramColumnId", createTaskRequest.ColumnId);
+                    command.Parameters.AddWithValue("@paramTaskName", createTaskRequest.TaskName);
+                    command.Parameters.AddWithValue("@paramTaskDescription", createTaskRequest.TaskDescription);
+                    command.Parameters.AddWithValue("@paramCreateUserId", createTaskRequest.UserId);
+
+                    try
+                    {
+                        await connection.OpenAsync();
+                        await command.ExecuteNonQueryAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
+                    }
                 }
             }
         }
-    }
 
-    public async void UpdateTask(UpdateTask updateTaskRequest)
-    {
-        
-        var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        public async void UpdateTask(UpdateTask updateTaskRequest)
         {
-            string query = $"CALL ProjectB.TaskUpdate(@paramColumnId, @paramTaskName, @paramTaskDescription, @paramUpdateUserId)";
 
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("@paramColumnId", updateTaskRequest.TaskId);
-                command.Parameters.AddWithValue("@paramTaskName", updateTaskRequest.TaskName);
-                command.Parameters.AddWithValue("@paramTaskDescription", updateTaskRequest.TaskDescription);
-                command.Parameters.AddWithValue("@paramUpdateUserId", updateTaskRequest.UserId);
+                string query = $"CALL ProjectB.TaskUpdate(@paramTaskId, @paramColumnId, @paramTaskName, @paramTaskDescription, @paramUpdateUserId)";
 
-                try
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    await connection.OpenAsync();
-                    await command.ExecuteNonQueryAsync();
-                }
-                catch (System.Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
+                    command.Parameters.AddWithValue("@paramTaskId", updateTaskRequest.TaskId);
+                    command.Parameters.AddWithValue("@paramColumnId", updateTaskRequest.ColumnId);
+                    command.Parameters.AddWithValue("@paramTaskName", updateTaskRequest.TaskName);
+                    command.Parameters.AddWithValue("@paramTaskDescription", updateTaskRequest.TaskDescription);
+                    command.Parameters.AddWithValue("@paramUpdateUserId", updateTaskRequest.UserId);
+
+                    try
+                    {
+                        await connection.OpenAsync();
+                        await command.ExecuteNonQueryAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
+                    }
                 }
             }
         }
-    }
 
-    public async void DeleteTask(int taskId, int userId)
-    {
-        var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        public async void DeleteTask(int taskId, int userId)
         {
-            string query = $"CALL ProjectB.TaskDelete(@paramColumnId, @paramUpdateUserId)";
+            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
 
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("@paramColumnId", taskId);
-                command.Parameters.AddWithValue("@paramUpdateUserId", userId);
+                string query = $"CALL ProjectB.TaskDelete(@paramColumnId, @paramUpdateUserId)";
 
-                try
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    await connection.OpenAsync();
-                    await command.ExecuteNonQueryAsync();
-                }
-                catch (System.Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
+                    command.Parameters.AddWithValue("@paramColumnId", taskId);
+                    command.Parameters.AddWithValue("@paramUpdateUserId", userId);
+
+                    try
+                    {
+                        await connection.OpenAsync();
+                        await command.ExecuteNonQueryAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
+                    }
                 }
             }
         }
-    }
 
-    #region HELPERS
+        #region HELPERS
 
-    private Task ExtractTaskFromReader(MySqlDataReader reader) 
-    {
-        int id = reader.GetInt32("TaskId"); 
-        string name = reader.GetString("TaskName"); 
-        string description = reader.GetString("TaskDescription"); 
-        DateTime createDatetime = reader.GetDateTime("CreateDatetime"); 
-        int createUserId = reader.GetInt32("CreateUserId"); 
-        DateTime updateDatetime = reader.GetDateTime("UpdateDatetime"); 
-        int updateUserId = reader.GetInt32("UpdateUserId");                             
-
-        return new Task()
+        private models.Task ExtractTaskFromReader(MySqlDataReader reader)
         {
-            TaskId = id,
-            TaskName = name,
-            TaskDescription = description,
-            CreateDatetime = createDatetime,
-            CreateUserId = createUserId,
-            UpdateDatetime = updateDatetime,
-            UpdateUserId = updateUserId
-        };
-    }
+            int id = reader.GetInt32("TaskId");
+            int columnId = reader.GetInt32("ColumnId");
+            string name = reader.GetString("TaskName");
+            string description = reader.GetString("TaskDescription");
+            DateTime createDatetime = reader.GetDateTime("CreateDatetime");
+            int createUserId = reader.GetInt32("CreateUserId");
+            DateTime updateDatetime = reader.GetDateTime("UpdateDatetime");
+            int updateUserId = reader.GetInt32("UpdateUserId");
 
-    #endregion
+            return new models.Task()
+            {
+                TaskId = id,
+                ColumnId = columnId,
+                TaskName = name,
+                TaskDescription = description,
+                CreateDatetime = createDatetime,
+                CreateUserId = createUserId,
+                UpdateDatetime = updateDatetime,
+                UpdateUserId = updateUserId
+            };
+        }
+
+        #endregion
+    }
 }

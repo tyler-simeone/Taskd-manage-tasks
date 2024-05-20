@@ -1,131 +1,136 @@
+using manage_tasks.src.models;
+using manage_tasks.src.repository;
 using Microsoft.AspNetCore.Mvc;
 
-[ApiController]
-[Route("api/[controller]")]
-public class TasksController : Controller
+namespace manage_tasks.src.controller
 {
-    IRequestValidator _validator;
-    ITasksRepository _tasksRepository;
+    [ApiController]
+    [Route("api/[controller]")]
+    public class TasksController : Controller
+    {
+        IRequestValidator _validator;
+        ITasksRepository _tasksRepository;
 
-    public TasksController(ITasksRepository tasksRepository, IRequestValidator requestValidator)
-    {
-        _validator = requestValidator;
-        _tasksRepository = tasksRepository;
-    }
+        public TasksController(ITasksRepository tasksRepository, IRequestValidator requestValidator)
+        {
+            _validator = requestValidator;
+            _tasksRepository = tasksRepository;
+        }
 
-    [HttpGet("{id}")]
-    [ProducesResponseType(typeof(Task), StatusCodes.Status200OK)]
-    public async Task<ActionResult<Task>> GetTask(int id, int userId)
-    {
-        if (_validator.ValidateGetTask(id, userId))
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(models.Task), StatusCodes.Status200OK)]
+        public async Task<ActionResult<models.Task>> GetTask(int id, int userId)
         {
-            try
+            if (_validator.ValidateGetTask(id, userId))
             {
-                Task task = await _tasksRepository.GetTask(id, userId);
-                Console.WriteLine($"Task: {task.TaskDescription}");
-                return Ok(task);
+                try
+                {
+                    models.Task task = await _tasksRepository.GetTask(id, userId);
+                    Console.WriteLine($"Task: {task.TaskDescription}");
+                    return Ok(task);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                    throw;
+                }
             }
-            catch (System.Exception ex)
+            else
             {
-                Console.WriteLine($"Error: {ex.Message}");
-                throw;
+                return BadRequest("Task ID is required.");
             }
         }
-        else 
-        {
-            return BadRequest("Task ID is required.");
-        }
-    }
 
-    [HttpGet]
-    [ProducesResponseType(typeof(TaskList), StatusCodes.Status200OK)]
-    public async Task<ActionResult<TaskList>> GetTasks(int columnId)
-    {
-        if (_validator.ValidateGetTasks(columnId))
+        [HttpGet]
+        [ProducesResponseType(typeof(TaskList), StatusCodes.Status200OK)]
+        public async Task<ActionResult<TaskList>> GetTasks(int columnId)
         {
-            try
+            if (_validator.ValidateGetTasks(columnId))
             {
-                TaskList taskList = await _tasksRepository.GetTasks(columnId);
-                return Ok(taskList);
+                try
+                {
+                    TaskList taskList = await _tasksRepository.GetTasks(columnId);
+                    return Ok(taskList);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                    throw;
+                }
             }
-            catch (System.Exception ex)
+            else
             {
-                Console.WriteLine($"Error: {ex.Message}");
-                throw;
-            }
-        }
-        else 
-        {
-            return BadRequest("User ID is required.");
-        }
-    }
-    
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult CreateTask(CreateTask createTaskRequest)
-    {
-        if (_validator.ValidateCreateTask(createTaskRequest))
-        {
-            try
-            {
-                _tasksRepository.CreateTask(createTaskRequest);
-                return Ok("Task Created");
-            }
-            catch (System.Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-                throw;
+                return BadRequest("User ID is required.");
             }
         }
-        else 
-        {
-            return BadRequest("CreateTaskRequest is required.");
-        }
-    }
 
-    [HttpPut]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult UpdateTask(UpdateTask updateTaskRequest)
-    {
-        if (_validator.ValidateUpdateTask(updateTaskRequest))
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult CreateTask(CreateTask createTaskRequest)
         {
-            try
+            if (_validator.ValidateCreateTask(createTaskRequest))
             {
-                _tasksRepository.UpdateTask(updateTaskRequest);
-                return Ok("Task Updated");
+                try
+                {
+                    _tasksRepository.CreateTask(createTaskRequest);
+                    return Ok("Task Created");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                    throw;
+                }
             }
-            catch (System.Exception ex)
+            else
             {
-                Console.WriteLine($"Error: {ex.Message}");
-                throw;
+                return BadRequest("CreateTaskRequest is required.");
             }
         }
-        else 
-        {
-            return BadRequest("UpdateTask is required.");
-        }
-    }
 
-    [HttpDelete]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult DeleteTask(int taskId, int userId)
-    {
-        if (_validator.ValidateDeleteTask(taskId, userId))
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult UpdateTask(UpdateTask updateTaskRequest)
         {
-            try
+            if (_validator.ValidateUpdateTask(updateTaskRequest))
             {
-                _tasksRepository.DeleteTask(taskId, userId);
-                return Ok("Task Deleted");
+                try
+                {
+                    _tasksRepository.UpdateTask(updateTaskRequest);
+                    return Ok("Task Updated");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                    throw;
+                }
             }
-            catch (System.Exception ex)
+            else
             {
-                Console.WriteLine($"Error: {ex.Message}");
-                throw;
+                return BadRequest("UpdateTask is required.");
             }
         }
-        else 
+
+        [HttpDelete("{taskId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult DeleteTask(int taskId, int userId)
         {
-            return BadRequest("DeleteTask is required.");
+            if (_validator.ValidateDeleteTask(taskId, userId))
+            {
+                try
+                {
+                    _tasksRepository.DeleteTask(taskId, userId);
+                    return Ok("Task Deleted");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                    throw;
+                }
+            }
+            else
+            {
+                return BadRequest("DeleteTask is required.");
+            }
         }
     }
 }

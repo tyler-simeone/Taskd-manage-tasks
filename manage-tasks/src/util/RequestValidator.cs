@@ -2,7 +2,9 @@ public interface IRequestValidator
 {
     bool ValidateGetTask(int taskId, int userId);
 
-    bool ValidateGetTasks(int userId);
+    bool ValidateGetTasks(int columnId);
+    
+    bool GetColumnsWithTasks(int boardId, int userId);
 
     bool ValidateCreateTask(CreateTask createTaskRequest);
 
@@ -24,6 +26,11 @@ public class RequestValidator : IRequestValidator
     }
 
     public bool ValidateGetTasks(int userId)
+    {
+        return true;
+    }
+
+    public bool GetColumnsWithTasks(int boardId, int userId)
     {
         return true;
     }

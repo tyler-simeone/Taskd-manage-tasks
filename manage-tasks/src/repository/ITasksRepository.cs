@@ -1,12 +1,17 @@
-public interface ITasksRepository 
+using manage_tasks.src.models;
+
+namespace manage_tasks.src.repository
 {
-    Task<Task> GetTask(int taskId, int userId);
+    public interface ITasksRepository
+    {
+        Task<models.Task> GetTask(int taskId, int userId);
 
-    Task<TaskList> GetTasks(int columnId);
-    
-    void CreateTask(CreateTask createTaskRequest);
+        Task<TaskList> GetTasks(int columnId);
 
-    void UpdateTask(UpdateTask updateTaskRequest);
+        void CreateTask(CreateTask createTaskRequest);
 
-    void DeleteTask(int taskId, int userId);
+        void UpdateTask(UpdateTask updateTaskRequest);
+
+        void DeleteTask(int taskId, int userId);
+    }
 }

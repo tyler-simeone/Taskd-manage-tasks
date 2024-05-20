@@ -1,13 +1,16 @@
-public class TaskList : ResponseBase
+namespace manage_tasks.src.models
 {
-    public TaskList()
+    public class TaskList : ResponseBase
     {
-        Tasks = new List<Task>();
+        public TaskList()
+        {
+            Tasks = new List<Task>();
+        }
+
+        public List<Task> Tasks { get; set; }
+
+        public int PageNumber { get; set; }
+
+        public int PageSize { get; set; }
     }
-
-    public List<Task> Tasks { get; set; }
-
-    public int PageNumber { get; set; }
-
-    public int PageSize { get; set; }
 }
