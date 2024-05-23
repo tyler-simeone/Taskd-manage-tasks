@@ -1,9 +1,11 @@
 using manage_tasks.src.models;
 using manage_tasks.src.repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace manage_tasks.src.controller
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TasksController : Controller
