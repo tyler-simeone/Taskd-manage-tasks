@@ -1,5 +1,6 @@
 using System;
 using manage_tasks.src.models;
+using Microsoft.IdentityModel.Tokens;
 using MySql.Data.MySqlClient;
 
 namespace manage_tasks.src.dataservice
@@ -7,17 +8,19 @@ namespace manage_tasks.src.dataservice
     public class TasksDataservice : ITasksDataservice
     {
         private IConfiguration _configuration;
+        private string _conx;
 
         public TasksDataservice(IConfiguration configuration)
         {
             _configuration = configuration;
+            _conx = _configuration["ProjectBLocalConnection"];
+            if (_conx.IsNullOrEmpty())
+                _conx = _configuration.GetConnectionString("ProjectBLocalConnection");
         }
 
         public async Task<models.Task> GetTask(int taskId, int userId)
         {
-            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_conx))
             {
                 string query = $"CALL ProjectB.TaskGetDetailsByTaskId(@paramTaskId)";
 
@@ -50,9 +53,7 @@ namespace manage_tasks.src.dataservice
 
         public async Task<TaskList> GetTasks(int columnId)
         {
-            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_conx))
             {
                 string query = $"CALL ProjectB.TaskGetAllByColumnId(@paramColumnId)";
 
@@ -88,9 +89,7 @@ namespace manage_tasks.src.dataservice
 
         public async void CreateTask(CreateTask createTaskRequest)
         {
-            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_conx))
             {
                 string query = $"CALL ProjectB.TaskPersist(@paramColumnId, @paramTaskName, @paramTaskDescription, @paramCreateUserId)";
 
@@ -118,9 +117,7 @@ namespace manage_tasks.src.dataservice
         public async void UpdateTask(UpdateTask updateTaskRequest)
         {
 
-            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_conx))
             {
                 string query = $"CALL ProjectB.TaskUpdate(@paramTaskId, @paramColumnId, @paramTaskName, @paramTaskDescription, @paramUpdateUserId)";
 
@@ -148,9 +145,7 @@ namespace manage_tasks.src.dataservice
 
         public async void DeleteTask(int taskId, int userId)
         {
-            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_conx))
             {
                 string query = $"CALL ProjectB.TaskDelete(@paramColumnId, @paramUpdateUserId)";
 
