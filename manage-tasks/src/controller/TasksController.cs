@@ -28,7 +28,6 @@ namespace manage_tasks.src.controller
                 try
                 {
                     models.Task task = await _tasksRepository.GetTask(id, userId);
-                    Console.WriteLine($"Task: {task.TaskDescription}");
                     return Ok(task);
                 }
                 catch (Exception ex)

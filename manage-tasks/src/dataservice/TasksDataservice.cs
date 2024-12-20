@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using manage_tasks.src.models;
 using Microsoft.IdentityModel.Tokens;
 using MySql.Data.MySqlClient;
@@ -14,18 +15,19 @@ namespace manage_tasks.src.dataservice
         {
             _configuration = configuration;
             _conx = _configuration["ProjectBLocalConnection"];
+
             if (_conx.IsNullOrEmpty())
                 _conx = _configuration.GetConnectionString("ProjectBLocalConnection");
         }
 
         public async Task<models.Task> GetTask(int taskId, int userId)
         {
-            using (MySqlConnection connection = new MySqlConnection(_conx))
+            using (MySqlConnection connection = new(_conx))
             {
-                string query = $"CALL ProjectB.TaskGetDetailsByTaskId(@paramTaskId)";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (MySqlCommand command = new("ProjectB.TaskGetDetailsByTaskId", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     command.Parameters.AddWithValue("@paramTaskId", taskId);
 
                     try
@@ -53,12 +55,12 @@ namespace manage_tasks.src.dataservice
 
         public async Task<TaskList> GetTasks(int columnId)
         {
-            using (MySqlConnection connection = new MySqlConnection(_conx))
+            using (MySqlConnection connection = new(_conx))
             {
-                string query = $"CALL ProjectB.TaskGetAllByColumnId(@paramColumnId)";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (MySqlCommand command = new("ProjectB.TaskGetAllByColumnId", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+                    
                     command.Parameters.AddWithValue("@paramColumnId", columnId);
 
                     try
@@ -89,12 +91,12 @@ namespace manage_tasks.src.dataservice
 
         public async void CreateTask(CreateTask createTaskRequest)
         {
-            using (MySqlConnection connection = new MySqlConnection(_conx))
+            using (MySqlConnection connection = new(_conx))
             {
-                string query = $"CALL ProjectB.TaskPersist(@paramColumnId, @paramTaskName, @paramTaskDescription, @paramCreateUserId)";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (MySqlCommand command = new("ProjectB.TaskPersist", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     command.Parameters.AddWithValue("@paramColumnId", createTaskRequest.ColumnId);
                     command.Parameters.AddWithValue("@paramTaskName", createTaskRequest.TaskName);
                     command.Parameters.AddWithValue("@paramTaskDescription", createTaskRequest.TaskDescription);
@@ -117,12 +119,12 @@ namespace manage_tasks.src.dataservice
         public async void UpdateTask(UpdateTask updateTaskRequest)
         {
 
-            using (MySqlConnection connection = new MySqlConnection(_conx))
+            using (MySqlConnection connection = new(_conx))
             {
-                string query = $"CALL ProjectB.TaskUpdate(@paramTaskId, @paramColumnId, @paramTaskName, @paramTaskDescription, @paramUpdateUserId)";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (MySqlCommand command = new("ProjectB.TaskUpdate", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     command.Parameters.AddWithValue("@paramTaskId", updateTaskRequest.TaskId);
                     command.Parameters.AddWithValue("@paramColumnId", updateTaskRequest.ColumnId);
                     command.Parameters.AddWithValue("@paramTaskName", updateTaskRequest.TaskName);
@@ -145,12 +147,12 @@ namespace manage_tasks.src.dataservice
 
         public async void DeleteTask(int taskId, int userId)
         {
-            using (MySqlConnection connection = new MySqlConnection(_conx))
+            using (MySqlConnection connection = new(_conx))
             {
-                string query = $"CALL ProjectB.TaskDelete(@paramColumnId, @paramUpdateUserId)";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (MySqlCommand command = new("ProjectB.TaskDelete", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     command.Parameters.AddWithValue("@paramColumnId", taskId);
                     command.Parameters.AddWithValue("@paramUpdateUserId", userId);
 
