@@ -5,9 +5,8 @@ source .env
 
 # Run the Docker container with specified environment variables and port mapping
 docker run -d \
-  --name test-tasks \
+  --name manage-tasks \
   -p 5273:80 \
-  --network my_custom_network \
   -e ProjectBLocalConnection=$PROJECT_B_LOCAL_CONX \
   -e UserPoolId=$USER_POOL_ID \
   -e Region=$REGION \
