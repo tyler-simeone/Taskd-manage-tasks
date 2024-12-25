@@ -7,7 +7,7 @@ source .env
 docker run -d \
   --name manage-tasks \
   -p 5273:80 \
-  -e ProjectBLocalConnection=$PROJECT_B_LOCAL_CONX \
+  -e LocalDBConnection=$LOCAL_DB_CONX \
   -e UserPoolId=$USER_POOL_ID \
   -e Region=$REGION \
   tylersimeone/projectb/manage-tasks:latest

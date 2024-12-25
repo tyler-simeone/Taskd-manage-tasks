@@ -14,10 +14,10 @@ namespace manage_tasks.src.dataservice
         public TasksDataservice(IConfiguration configuration)
         {
             _configuration = configuration;
-            _conx = _configuration["ProjectBLocalConnection"];
+            _conx = _configuration["LocalDBConnection"];
 
             if (_conx.IsNullOrEmpty())
-                _conx = _configuration.GetConnectionString("ProjectBLocalConnection");
+                _conx = _configuration.GetConnectionString("LocalDBConnection");
         }
 
         public async Task<models.Task> GetTask(int taskId, int userId)
