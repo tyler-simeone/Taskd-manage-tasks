@@ -24,7 +24,7 @@ namespace manage_tasks.src.dataservice
         {
             using (MySqlConnection connection = new(_conx))
             {
-                using (MySqlCommand command = new("ProjectB.TaskGetDetailsByTaskId", connection))
+                using (MySqlCommand command = new("taskd_db_dev.TaskGetDetailsByTaskId", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -57,7 +57,7 @@ namespace manage_tasks.src.dataservice
         {
             using (MySqlConnection connection = new(_conx))
             {
-                using (MySqlCommand command = new("ProjectB.TaskGetAllByColumnId", connection))
+                using (MySqlCommand command = new("taskd_db_dev.TaskGetAllByColumnId", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     
@@ -93,7 +93,7 @@ namespace manage_tasks.src.dataservice
         {
             using (MySqlConnection connection = new(_conx))
             {
-                using (MySqlCommand command = new("ProjectB.TaskPersist", connection))
+                using (MySqlCommand command = new("taskd_db_dev.TaskPersist", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -121,7 +121,7 @@ namespace manage_tasks.src.dataservice
 
             using (MySqlConnection connection = new(_conx))
             {
-                using (MySqlCommand command = new("ProjectB.TaskUpdate", connection))
+                using (MySqlCommand command = new("taskd_db_dev.TaskUpdate", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -149,11 +149,11 @@ namespace manage_tasks.src.dataservice
         {
             using (MySqlConnection connection = new(_conx))
             {
-                using (MySqlCommand command = new("ProjectB.TaskDelete", connection))
+                using (MySqlCommand command = new("taskd_db_dev.TaskDelete", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
-                    command.Parameters.AddWithValue("@paramColumnId", taskId);
+                    command.Parameters.AddWithValue("@paramTaskId", taskId);
                     command.Parameters.AddWithValue("@paramUpdateUserId", userId);
 
                     try
