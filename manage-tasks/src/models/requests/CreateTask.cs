@@ -8,6 +8,8 @@ public class CreateTask
     public int UserId { get; set; }
 
     public int ColumnId { get; set; }
+    
+    public int? TagId { get; set; }
 
     public string TaskName { get; set; }
 
