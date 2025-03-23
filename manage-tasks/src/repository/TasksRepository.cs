@@ -1,15 +1,20 @@
+using manage_tasks.src.clients;
 using manage_tasks.src.dataservice;
 using manage_tasks.src.models;
+using manage_tasks.src.models.requests;
 
 namespace manage_tasks.src.repository
 {
     public class TasksRepository : ITasksRepository
     {
-        ITasksDataservice _tasksDataservice;
+        readonly ITasksDataservice _tasksDataservice;
+        readonly ITagsClient _tagsClient;
 
-        public TasksRepository(ITasksDataservice tasksDataservice)
+        public TasksRepository(ITasksDataservice tasksDataservice,
+                               ITagsClient tagsClient)
         {
             _tasksDataservice = tasksDataservice;
+            _tagsClient = tagsClient;
         }
 
         public async Task<models.Task> GetTask(int taskId, int userId)
@@ -26,11 +31,20 @@ namespace manage_tasks.src.repository
             }
         }
 
-        public async Task<TaskList> GetTasks(int columnId)
+        public async Task<TaskList> GetTasks(int columnId, int boardId)
         {
             try
             {
                 TaskList taskList = await _tasksDataservice.GetTasks(columnId);
+                
+                var tagsOnTasks = await _tasksDataservice.GetTaskTags(columnId, boardId);
+
+                taskList.Tasks.ForEach(task => 
+                {
+                    var taskTags = tagsOnTasks.Where(tt => tt.TaskId == task.TaskId).ToList();
+                    task.TaskTags = taskTags;
+                });
+
                 return taskList;
             }
             catch (Exception ex)
@@ -40,11 +54,14 @@ namespace manage_tasks.src.repository
             }
         }
 
-        public void CreateTask(CreateTask createTaskRequest)
+        public async void CreateTask(CreateTask createTaskRequest)
         {
             try
             {
-                _tasksDataservice.CreateTask(createTaskRequest);
+                var taskId = await _tasksDataservice.CreateTask(createTaskRequest);
+
+                if (createTaskRequest.TagId != null)
+                    await _tagsClient.AddTagToTask(createTaskRequest.UserId, createTaskRequest.BoardId, (int)createTaskRequest.TagId, taskId);
             }
             catch (Exception ex)
             {
@@ -58,6 +75,19 @@ namespace manage_tasks.src.repository
             try
             {
                 _tasksDataservice.UpdateTask(updateTaskRequest);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
+        }
+        
+        public void DropTask(DropTask dropTaskRequest)
+        {
+            try
+            {
+                _tasksDataservice.DropTask(dropTaskRequest);
             }
             catch (Exception ex)
             {
