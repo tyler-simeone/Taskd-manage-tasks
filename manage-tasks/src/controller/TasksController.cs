@@ -1,4 +1,5 @@
 using manage_tasks.src.models;
+using manage_tasks.src.models.requests;
 using manage_tasks.src.repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,45 +24,31 @@ namespace manage_tasks.src.controller
         [ProducesResponseType(typeof(models.Task), StatusCodes.Status200OK)]
         public async Task<ActionResult<models.Task>> GetTask(int id, int userId)
         {
-            if (_validator.ValidateGetTask(id, userId))
+            try
             {
-                try
-                {
-                    models.Task task = await _tasksRepository.GetTask(id, userId);
-                    return Ok(task);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
-                }
+                models.Task task = await _tasksRepository.GetTask(id, userId);
+                return Ok(task);
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("Task ID is required.");
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
             }
         }
 
-        [HttpGet]
+        [HttpGet("/board/{boardId}/column/{columnId}")]
         [ProducesResponseType(typeof(TaskList), StatusCodes.Status200OK)]
-        public async Task<ActionResult<TaskList>> GetTasks(int columnId)
+        public async Task<ActionResult<TaskList>> GetTasks(int boardId, int columnId)
         {
-            if (_validator.ValidateGetTasks(columnId))
+            try
             {
-                try
-                {
-                    TaskList taskList = await _tasksRepository.GetTasks(columnId);
-                    return Ok(taskList);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
-                }
+                TaskList taskList = await _tasksRepository.GetTasks(columnId, boardId);
+                return Ok(taskList);
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("User ID is required.");
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
             }
         }
 
@@ -69,22 +56,15 @@ namespace manage_tasks.src.controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult CreateTask(CreateTask createTaskRequest)
         {
-            if (_validator.ValidateCreateTask(createTaskRequest))
+            try
             {
-                try
-                {
-                    _tasksRepository.CreateTask(createTaskRequest);
-                    return Ok("Task Created");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
-                }
+                _tasksRepository.CreateTask(createTaskRequest);
+                return Ok("Task Created");
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("CreateTaskRequest is required.");
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
             }
         }
 
@@ -92,22 +72,31 @@ namespace manage_tasks.src.controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult UpdateTask(UpdateTask updateTaskRequest)
         {
-            if (_validator.ValidateUpdateTask(updateTaskRequest))
+            try
             {
-                try
-                {
-                    _tasksRepository.UpdateTask(updateTaskRequest);
-                    return Ok("Task Updated");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
-                }
+                _tasksRepository.UpdateTask(updateTaskRequest);
+                return Ok();
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("UpdateTask is required.");
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
+        }
+        
+        [HttpPut("dropped")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult DropTask(DropTask dropTaskRequest)
+        {
+            try
+            {
+                _tasksRepository.DropTask(dropTaskRequest);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
             }
         }
 
@@ -115,22 +104,15 @@ namespace manage_tasks.src.controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult DeleteTask(int taskId, int userId)
         {
-            if (_validator.ValidateDeleteTask(taskId, userId))
+            try
             {
-                try
-                {
-                    _tasksRepository.DeleteTask(taskId, userId);
-                    return Ok("Task Deleted");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
-                }
+                _tasksRepository.DeleteTask(taskId, userId);
+                return Ok("Task Deleted");
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("DeleteTask is required.");
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
             }
         }
     }
