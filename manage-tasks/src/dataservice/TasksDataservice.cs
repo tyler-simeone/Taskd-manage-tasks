@@ -250,7 +250,15 @@ namespace manage_tasks.src.dataservice
         {
             int id = reader.GetInt32("TaskId");
             int columnId = reader.GetInt32("ColumnId");
-            int? boardId = reader.IsDBNull(reader.GetOrdinal("BoardId")) ? null : reader.GetInt32("BoardId");
+            
+            int? boardId = null;
+            try
+            {
+                boardId = reader.IsDBNull(reader.GetOrdinal("BoardId")) ? null : reader.GetInt32("BoardId");
+            }
+            catch
+            {}
+
             string name = reader.GetString("TaskName");
             string description = reader.GetString("TaskDescription");
             DateTime createDatetime = reader.GetDateTime("CreateDatetime");
